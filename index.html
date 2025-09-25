@@ -391,6 +391,156 @@
             transition-delay: 0.8s;
         }
 
+        /* Стили для 3D модели */
+        .model-container {
+            width: 100%;
+            height: 70vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+            position: relative;
+        }
+
+        .model-wrapper {
+            width: 400px;
+            height: 400px;
+            position: relative;
+            perspective: 1000px;
+            transform: translateY(30px);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .slide.active .model-wrapper {
+            transform: translateY(0);
+            opacity: 1;
+            transition-delay: 0.3s;
+        }
+
+        .photodiode-model {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+        }
+
+        .part {
+            position: absolute;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            transform-style: preserve-3d;
+        }
+
+        .part:hover {
+            filter: brightness(1.2);
+            transform: translateZ(10px);
+        }
+
+        .part-info {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            width: 200px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 10;
+        }
+
+        .part:hover .part-info {
+            opacity: 1;
+        }
+
+        .case {
+            width: 200px;
+            height: 100px;
+            background: linear-gradient(45deg, #555, #888);
+            transform: translateZ(0px);
+            top: 150px;
+            left: 100px;
+        }
+
+        .lens {
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle at 30% 30%, #aaffff, #00aaff);
+            border-radius: 50%;
+            transform: translateZ(50px);
+            top: 160px;
+            left: 160px;
+        }
+
+        .lens .part-info {
+            top: -80px;
+            left: 0;
+        }
+
+        .anode {
+            width: 20px;
+            height: 120px;
+            background: linear-gradient(to bottom, #ff4444, #cc0000);
+            transform: translateZ(0px);
+            top: 140px;
+            left: 80px;
+        }
+
+        .anode .part-info {
+            top: -60px;
+            left: 30px;
+        }
+
+        .cathode {
+            width: 20px;
+            height: 120px;
+            background: linear-gradient(to bottom, #4444ff, #0000cc);
+            transform: translateZ(0px);
+            top: 140px;
+            left: 300px;
+        }
+
+        .cathode .part-info {
+            top: -60px;
+            right: 30px;
+        }
+
+        .pn-junction {
+            width: 120px;
+            height: 60px;
+            background: linear-gradient(to right, #ff4444, #4444ff);
+            transform: translateZ(25px);
+            top: 170px;
+            left: 140px;
+        }
+
+        .pn-junction .part-info {
+            bottom: -70px;
+            left: 0;
+        }
+
+        .instructions {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            text-align: center;
+            backdrop-filter: blur(5px);
+        }
+
         /* Адаптивность */
         @media (max-width: 1200px) {
             .slide-title {
@@ -419,6 +569,11 @@
             
             .pros-cons {
                 flex-direction: column;
+            }
+            
+            .model-wrapper {
+                width: 350px;
+                height: 350px;
             }
         }
 
@@ -478,6 +633,45 @@
             .grid-item, .pros, .cons {
                 padding: 20px;
             }
+            
+            .model-wrapper {
+                width: 300px;
+                height: 300px;
+            }
+            
+            .case {
+                width: 180px;
+                height: 90px;
+                top: 135px;
+                left: 60px;
+            }
+            
+            .lens {
+                width: 70px;
+                height: 70px;
+                top: 145px;
+                left: 125px;
+            }
+            
+            .anode, .cathode {
+                height: 110px;
+                top: 125px;
+            }
+            
+            .anode {
+                left: 50px;
+            }
+            
+            .cathode {
+                left: 260px;
+            }
+            
+            .pn-junction {
+                width: 110px;
+                height: 50px;
+                top: 155px;
+                left: 95px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -510,6 +704,45 @@
                 width: 12px;
                 height: 12px;
             }
+            
+            .model-wrapper {
+                width: 250px;
+                height: 250px;
+            }
+            
+            .case {
+                width: 150px;
+                height: 75px;
+                top: 112px;
+                left: 50px;
+            }
+            
+            .lens {
+                width: 60px;
+                height: 60px;
+                top: 122px;
+                left: 95px;
+            }
+            
+            .anode, .cathode {
+                height: 95px;
+                top: 102px;
+            }
+            
+            .anode {
+                left: 30px;
+            }
+            
+            .cathode {
+                left: 220px;
+            }
+            
+            .pn-junction {
+                width: 90px;
+                height: 45px;
+                top: 132px;
+                left: 80px;
+            }
         }
 
         @media (max-height: 600px) {
@@ -539,6 +772,10 @@
             .slide-indicators {
                 bottom: 70px;
             }
+            
+            .model-container {
+                height: 50vh;
+            }
         }
     </style>
 </head>
@@ -558,7 +795,7 @@
             <!-- Слайд 1 -->
             <div class="slide active">
                 <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1532094349884-543bc11b234d?ixlib=rb-4.0.3&auto=format&fit=crop&w=2100&q=80')"></div>
-                <div class="slide-number">1/10</div>
+                <div class="slide-number">1/11</div>
                 <h1 class="slide-title">Введение</h1>
                 <div class="slide-content">
                     <ul>
@@ -573,7 +810,7 @@
             <!-- Слайд 2 -->
             <div class="slide">
                 <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=2100&q=80')"></div>
-                <div class="slide-number">2/10</div>
+                <div class="slide-number">2/11</div>
                 <h1 class="slide-title">Классификация ФЭП</h1>
                 <div class="slide-content">
                     <ul>
@@ -589,7 +826,7 @@
             <!-- Слайд 3 -->
             <div class="slide">
                 <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=2100&q=80')"></div>
-                <div class="slide-number">3/10</div>
+                <div class="slide-number">3/11</div>
                 <h1 class="slide-title">Основные характеристики ФЭП</h1>
                 <div class="slide-content">
                     <ul>
@@ -606,7 +843,7 @@
             <!-- Слайд 4 -->
             <div class="slide">
                 <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?ixlib=rb-4.0.3&auto=format&fit=crop&w=2100&q=80')"></div>
-                <div class="slide-number">4/10</div>
+                <div class="slide-number">4/11</div>
                 <h1 class="slide-title">Области применения</h1>
                 <div class="slide-content">
                     <ul>
@@ -622,7 +859,7 @@
             <!-- Слайд 5 -->
             <div class="slide">
                 <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1581094794329-c8112a89af24?ixlib=rb-4.0.3&auto=format&fit=crop&w=2100&q=80')"></div>
-                <div class="slide-number">5/10</div>
+                <div class="slide-number">5/11</div>
                 <h1 class="slide-title">Фотодиоды и фототранзисторы</h1>
                 <div class="slide-content">
                     <h3 style="margin-top: 10px; color: var(--primary);">Фотодиод</h3>
@@ -646,7 +883,7 @@
             <!-- Слайд 6 -->
             <div class="slide">
                 <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1581094794329-c8112a89af24?ixlib=rb-4.0.3&auto=format&fit=crop&w=2100&q=80')"></div>
-                <div class="slide-number">6/10</div>
+                <div class="slide-number">6/11</div>
                 <h1 class="slide-title">Фотоэлементы и фотопроводники</h1>
                 <div class="slide-content">
                     <h3 style="margin-top: 10px; color: var(--primary);">Фотоэлементы (вакуумные/газонаполненные):</h3>
@@ -667,7 +904,7 @@
             <!-- Слайд 7 -->
             <div class="slide">
                 <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-4.0.3&auto=format&fit=crop&w=2100&q=80')"></div>
-                <div class="slide-number">7/10</div>
+                <div class="slide-number">7/11</div>
                 <h1 class="slide-title">Солнечные элементы</h1>
                 <div class="slide-content">
                     <ul>
@@ -685,10 +922,61 @@
                 </div>
             </div>
             
-            <!-- Слайд 8 -->
+            <!-- Слайд 8 - Новый слайд с 3D моделью -->
             <div class="slide">
                 <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=2100&q=80')"></div>
-                <div class="slide-number">8/10</div>
+                <div class="slide-number">8/11</div>
+                <h1 class="slide-title">3D Модель фотодиода</h1>
+                <div class="slide-content">
+                    <p>Изучите устройство фотодиода с помощью интерактивной 3D модели. Наведите курсор на элементы, чтобы узнать больше.</p>
+                    
+                    <div class="model-container">
+                        <div class="model-wrapper">
+                            <div class="photodiode-model" id="photodiode-model">
+                                <div class="part case">
+                                    Корпус
+                                    <div class="part-info">
+                                        Защищает внутренние компоненты от внешних воздействий и обеспечивает механическую прочность.
+                                    </div>
+                                </div>
+                                <div class="part lens">
+                                    Линза
+                                    <div class="part-info">
+                                        Фокусирует свет на p-n переход для увеличения эффективности преобразования.
+                                    </div>
+                                </div>
+                                <div class="part anode">
+                                    Анод (+)
+                                    <div class="part-info">
+                                        Положительный электрод, через который ток выходит из фотодиода.
+                                    </div>
+                                </div>
+                                <div class="part cathode">
+                                    Катод (-)
+                                    <div class="part-info">
+                                        Отрицательный электрод, через который ток входит в фотодиод.
+                                    </div>
+                                </div>
+                                <div class="part pn-junction">
+                                    p-n переход
+                                    <div class="part-info">
+                                        Область, где происходит генерация электронно-дырочных пар под действием света.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="instructions">
+                        <i class="fas fa-mouse-pointer"></i> Вращайте модель мышью | <i class="fas fa-search"></i> Наводите на элементы для информации
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Слайд 9 -->
+            <div class="slide">
+                <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=2100&q=80')"></div>
+                <div class="slide-number">9/11</div>
                 <h1 class="slide-title">Преимущества и недостатки ФЭП</h1>
                 <div class="slide-content">
                     <div class="pros-cons">
@@ -714,10 +1002,10 @@
                 </div>
             </div>
             
-            <!-- Слайд 9 -->
+            <!-- Слайд 10 -->
             <div class="slide">
                 <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1535223289827-42f1e9919769?ixlib=rb-4.0.3&auto=format&fit=crop&w=2100&q=80')"></div>
-                <div class="slide-number">9/10</div>
+                <div class="slide-number">10/11</div>
                 <h1 class="slide-title">Перспективы развития</h1>
                 <div class="slide-content">
                     <ul>
@@ -729,10 +1017,10 @@
                 </div>
             </div>
             
-            <!-- Слайд 10 -->
+            <!-- Слайд 11 -->
             <div class="slide">
                 <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1535223289827-42f1e9919769?ixlib=rb-4.0.3&auto=format&fit=crop&w=2100&q=80')"></div>
-                <div class="slide-number">10/10</div>
+                <div class="slide-number">11/11</div>
                 <h1 class="slide-title">Заключение</h1>
                 <div class="slide-content">
                     <ul>
@@ -871,6 +1159,41 @@
                     document.exitFullscreen();
                     fullscreenBtn.innerHTML = '<i class="fas fa-expand"></i>';
                 }
+            });
+            
+            // Инициализация 3D модели фотодиода
+            const model = document.getElementById('photodiode-model');
+            let isDragging = false;
+            let previousMousePosition = { x: 0, y: 0 };
+            let rotation = { x: 0, y: 0 };
+            
+            model.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                previousMousePosition = { x: e.clientX, y: e.clientY };
+            });
+            
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                
+                const deltaX = e.clientX - previousMousePosition.x;
+                const deltaY = e.clientY - previousMousePosition.y;
+                
+                rotation.y += deltaX * 0.5;
+                rotation.x += deltaY * 0.5;
+                
+                model.style.transform = `rotateY(${rotation.y}deg) rotateX(${rotation.x}deg)`;
+                
+                previousMousePosition = { x: e.clientX, y: e.clientY };
+            });
+            
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+            
+            // Сброс вращения при двойном клике
+            model.addEventListener('dblclick', () => {
+                rotation = { x: 0, y: 0 };
+                model.style.transform = 'rotateY(0deg) rotateX(0deg)';
             });
             
             // Инициализация
