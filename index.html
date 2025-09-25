@@ -391,8 +391,8 @@
             transition-delay: 0.8s;
         }
 
-        /* Стили для 3D модели */
-        .model-container {
+        /* Стили для 3D голографической модели */
+        .hologram-container {
             width: 100%;
             height: 70vh;
             display: flex;
@@ -402,28 +402,58 @@
             position: relative;
         }
 
-        .model-wrapper {
-            width: 400px;
-            height: 400px;
+        .hologram-wrapper {
+            width: 500px;
+            height: 500px;
             position: relative;
-            perspective: 1000px;
+            perspective: 1200px;
             transform: translateY(30px);
             opacity: 0;
             transition: var(--transition);
         }
 
-        .slide.active .model-wrapper {
+        .slide.active .hologram-wrapper {
             transform: translateY(0);
             opacity: 1;
             transition-delay: 0.3s;
         }
 
-        .photodiode-model {
+        .hologram {
             width: 100%;
             height: 100%;
             position: relative;
             transform-style: preserve-3d;
-            transition: transform 0.5s ease;
+            transition: transform 0.8s cubic-bezier(0.23, 1, 0.320, 1);
+            filter: drop-shadow(0 0 20px rgba(0, 240, 255, 0.5));
+        }
+
+        .hologram-base {
+            position: absolute;
+            width: 300px;
+            height: 20px;
+            background: linear-gradient(45deg, #00f0ff, #7b00ff);
+            border-radius: 10px;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%) translateZ(-50px);
+            box-shadow: 0 0 30px rgba(123, 0, 255, 0.7);
+            animation: pulse 3s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 20px rgba(123, 0, 255, 0.7); }
+            100% { box-shadow: 0 0 40px rgba(0, 240, 255, 0.9); }
+        }
+
+        .hologram-beam {
+            position: absolute;
+            width: 250px;
+            height: 300px;
+            background: linear-gradient(to top, transparent, rgba(0, 240, 255, 0.1));
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%) translateZ(-25px);
+            clip-path: polygon(0 0, 100% 0, 80% 100%, 20% 100%);
         }
 
         .part {
@@ -435,97 +465,180 @@
             color: white;
             font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.5s ease;
             transform-style: preserve-3d;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.8);
+            overflow: hidden;
+        }
+
+        .part::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.5s;
+        }
+
+        .part:hover::before {
+            left: 100%;
         }
 
         .part:hover {
-            filter: brightness(1.2);
-            transform: translateZ(10px);
+            transform: translateZ(30px) scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.7);
+            z-index: 10;
         }
 
         .part-info {
             position: absolute;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.9);
             color: white;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 14px;
-            width: 200px;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 16px;
+            width: 280px;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease;
-            z-index: 10;
+            transition: opacity 0.5s ease, transform 0.3s ease;
+            z-index: 20;
+            border: 1px solid rgba(0, 240, 255, 0.5);
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.3);
+            backdrop-filter: blur(10px);
+            line-height: 1.4;
         }
 
         .part:hover .part-info {
             opacity: 1;
+            transform: translateY(-10px);
         }
 
         .case {
-            width: 200px;
-            height: 100px;
-            background: linear-gradient(45deg, #555, #888);
+            width: 220px;
+            height: 120px;
+            background: linear-gradient(45deg, rgba(85, 85, 85, 0.8), rgba(136, 136, 136, 0.8));
             transform: translateZ(0px);
-            top: 150px;
-            left: 100px;
+            top: 180px;
+            left: 140px;
+        }
+
+        .case .part-info {
+            top: -140px;
+            left: 0;
         }
 
         .lens {
-            width: 80px;
-            height: 80px;
-            background: radial-gradient(circle at 30% 30%, #aaffff, #00aaff);
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle at 30% 30%, rgba(170, 255, 255, 0.9), rgba(0, 170, 255, 0.9));
             border-radius: 50%;
-            transform: translateZ(50px);
-            top: 160px;
-            left: 160px;
+            transform: translateZ(60px);
+            top: 190px;
+            left: 200px;
+            box-shadow: 0 0 30px rgba(0, 170, 255, 0.7);
         }
 
         .lens .part-info {
-            top: -80px;
+            top: -120px;
             left: 0;
         }
 
         .anode {
-            width: 20px;
-            height: 120px;
-            background: linear-gradient(to bottom, #ff4444, #cc0000);
+            width: 25px;
+            height: 140px;
+            background: linear-gradient(to bottom, rgba(255, 68, 68, 0.8), rgba(204, 0, 0, 0.8));
             transform: translateZ(0px);
-            top: 140px;
-            left: 80px;
+            top: 160px;
+            left: 110px;
         }
 
         .anode .part-info {
-            top: -60px;
-            left: 30px;
+            top: -100px;
+            left: 40px;
         }
 
         .cathode {
-            width: 20px;
-            height: 120px;
-            background: linear-gradient(to bottom, #4444ff, #0000cc);
+            width: 25px;
+            height: 140px;
+            background: linear-gradient(to bottom, rgba(68, 68, 255, 0.8), rgba(0, 0, 204, 0.8));
             transform: translateZ(0px);
-            top: 140px;
-            left: 300px;
+            top: 160px;
+            left: 365px;
         }
 
         .cathode .part-info {
-            top: -60px;
-            right: 30px;
+            top: -100px;
+            right: 40px;
         }
 
         .pn-junction {
-            width: 120px;
-            height: 60px;
-            background: linear-gradient(to right, #ff4444, #4444ff);
-            transform: translateZ(25px);
-            top: 170px;
-            left: 140px;
+            width: 140px;
+            height: 70px;
+            background: linear-gradient(to right, rgba(255, 68, 68, 0.7), rgba(68, 68, 255, 0.7));
+            transform: translateZ(30px);
+            top: 195px;
+            left: 180px;
+            border: 2px solid rgba(255, 255, 255, 0.5);
         }
 
         .pn-junction .part-info {
-            bottom: -70px;
+            bottom: -100px;
             left: 0;
+        }
+
+        .hologram-grid {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background-image: 
+                linear-gradient(rgba(0, 240, 255, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 240, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            transform: translateZ(-100px);
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .hologram-effects {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .hologram-effects::before, .hologram-effects::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: hologramPulse 4s infinite alternate;
+        }
+
+        .hologram-effects::before {
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.5) 0%, transparent 70%);
+            animation-delay: 0s;
+        }
+
+        .hologram-effects::after {
+            background: radial-gradient(circle, rgba(123, 0, 255, 0.5) 0%, transparent 70%);
+            animation-delay: 2s;
+        }
+
+        @keyframes hologramPulse {
+            0% { transform: scale(0.8); opacity: 0.1; }
+            100% { transform: scale(1.2); opacity: 0.3; }
         }
 
         .instructions {
@@ -533,12 +646,19 @@
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            background: rgba(0, 0, 0, 0.5);
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-size: 14px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 16px;
             text-align: center;
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+        }
+
+        .instructions i {
+            margin: 0 5px;
+            color: var(--primary);
         }
 
         /* Адаптивность */
@@ -571,9 +691,9 @@
                 flex-direction: column;
             }
             
-            .model-wrapper {
-                width: 350px;
-                height: 350px;
+            .hologram-wrapper {
+                width: 450px;
+                height: 450px;
             }
         }
 
@@ -634,43 +754,48 @@
                 padding: 20px;
             }
             
-            .model-wrapper {
-                width: 300px;
-                height: 300px;
+            .hologram-wrapper {
+                width: 380px;
+                height: 380px;
             }
             
             .case {
-                width: 180px;
-                height: 90px;
-                top: 135px;
-                left: 60px;
+                width: 190px;
+                height: 100px;
+                top: 150px;
+                left: 95px;
             }
             
             .lens {
-                width: 70px;
-                height: 70px;
-                top: 145px;
-                left: 125px;
+                width: 80px;
+                height: 80px;
+                top: 160px;
+                left: 150px;
             }
             
             .anode, .cathode {
-                height: 110px;
-                top: 125px;
+                height: 120px;
+                top: 140px;
             }
             
             .anode {
-                left: 50px;
+                left: 65px;
             }
             
             .cathode {
-                left: 260px;
+                left: 295px;
             }
             
             .pn-junction {
-                width: 110px;
-                height: 50px;
-                top: 155px;
-                left: 95px;
+                width: 120px;
+                height: 60px;
+                top: 165px;
+                left: 130px;
+            }
+            
+            .part-info {
+                width: 240px;
+                font-size: 14px;
             }
         }
 
@@ -705,43 +830,54 @@
                 height: 12px;
             }
             
-            .model-wrapper {
-                width: 250px;
-                height: 250px;
+            .hologram-wrapper {
+                width: 320px;
+                height: 320px;
             }
             
             .case {
-                width: 150px;
-                height: 75px;
-                top: 112px;
-                left: 50px;
+                width: 160px;
+                height: 85px;
+                top: 125px;
+                left: 80px;
             }
             
             .lens {
-                width: 60px;
-                height: 60px;
-                top: 122px;
-                left: 95px;
+                width: 70px;
+                height: 70px;
+                top: 135px;
+                left: 125px;
             }
             
             .anode, .cathode {
-                height: 95px;
-                top: 102px;
+                height: 105px;
+                top: 120px;
             }
             
             .anode {
-                left: 30px;
+                left: 50px;
             }
             
             .cathode {
-                left: 220px;
+                left: 250px;
             }
             
             .pn-junction {
-                width: 90px;
-                height: 45px;
-                top: 132px;
-                left: 80px;
+                width: 100px;
+                height: 50px;
+                top: 140px;
+                left: 110px;
+            }
+            
+            .part-info {
+                width: 200px;
+                font-size: 12px;
+                padding: 10px;
+            }
+            
+            .instructions {
+                font-size: 14px;
+                padding: 10px 20px;
             }
         }
 
@@ -773,7 +909,7 @@
                 bottom: 70px;
             }
             
-            .model-container {
+            .hologram-container {
                 height: 50vh;
             }
         }
@@ -922,45 +1058,55 @@
                 </div>
             </div>
             
-            <!-- Слайд 8 - Новый слайд с 3D моделью -->
+            <!-- Слайд 8 - Новый слайд с голограммой -->
             <div class="slide">
                 <div class="slide-bg" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=2100&q=80')"></div>
                 <div class="slide-number">8/11</div>
-                <h1 class="slide-title">3D Модель фотодиода</h1>
+                <h1 class="slide-title">Голограмма фотодиода</h1>
                 <div class="slide-content">
-                    <p>Изучите устройство фотодиода с помощью интерактивной 3D модели. Наведите курсор на элементы, чтобы узнать больше.</p>
+                    <p>Изучите устройство фотодиода с помощью интерактивной голографической модели. Наведите курсор на элементы, чтобы узнать больше.</p>
                     
-                    <div class="model-container">
-                        <div class="model-wrapper">
-                            <div class="photodiode-model" id="photodiode-model">
+                    <div class="hologram-container">
+                        <div class="hologram-wrapper">
+                            <div class="hologram" id="hologram">
+                                <div class="hologram-grid"></div>
+                                <div class="hologram-effects"></div>
+                                <div class="hologram-beam"></div>
+                                <div class="hologram-base"></div>
+                                
                                 <div class="part case">
                                     Корпус
                                     <div class="part-info">
-                                        Защищает внутренние компоненты от внешних воздействий и обеспечивает механическую прочность.
+                                        <strong>Корпус фотодиода</strong><br>
+                                        Защищает внутренние компоненты от внешних воздействий, обеспечивает механическую прочность и теплоотвод. Обычно изготавливается из металла или пластика.
                                     </div>
                                 </div>
                                 <div class="part lens">
                                     Линза
                                     <div class="part-info">
-                                        Фокусирует свет на p-n переход для увеличения эффективности преобразования.
+                                        <strong>Оптическая линза</strong><br>
+                                        Фокусирует свет на p-n переход для увеличения эффективности преобразования. Может быть выполнена из стекла или прозрачного пластика.
                                     </div>
                                 </div>
                                 <div class="part anode">
                                     Анод (+)
                                     <div class="part-info">
-                                        Положительный электрод, через который ток выходит из фотодиода.
+                                        <strong>Анод фотодиода</strong><br>
+                                        Положительный электрод, через который ток выходит из фотодиода при освещении. Подключается к положительному полюсу источника питания.
                                     </div>
                                 </div>
                                 <div class="part cathode">
                                     Катод (-)
                                     <div class="part-info">
-                                        Отрицательный электрод, через который ток входит в фотодиод.
+                                        <strong>Катод фотодиода</strong><br>
+                                        Отрицательный электрод, через который ток входит в фотодиод. Подключается к отрицательному полюсу источника питания.
                                     </div>
                                 </div>
                                 <div class="part pn-junction">
                                     p-n переход
                                     <div class="part-info">
-                                        Область, где происходит генерация электронно-дырочных пар под действием света.
+                                        <strong>p-n переход</strong><br>
+                                        Ключевой элемент фотодиода. При освещении в этой области генерируются электронно-дырочные пары, создающие фототок. Изготовлен из полупроводникового материала (кремний, германий).
                                     </div>
                                 </div>
                             </div>
@@ -968,7 +1114,7 @@
                     </div>
                     
                     <div class="instructions">
-                        <i class="fas fa-mouse-pointer"></i> Вращайте модель мышью | <i class="fas fa-search"></i> Наводите на элементы для информации
+                        <i class="fas fa-mouse-pointer"></i> Вращайте модель мышью | <i class="fas fa-search"></i> Наводите на элементы для информации | <i class="fas fa-sync-alt"></i> Двойной клик для сброса
                     </div>
                 </div>
             </div>
@@ -1161,15 +1307,19 @@
                 }
             });
             
-            // Инициализация 3D модели фотодиода
-            const model = document.getElementById('photodiode-model');
+            // Инициализация голографической модели
+            const hologram = document.getElementById('hologram');
             let isDragging = false;
             let previousMousePosition = { x: 0, y: 0 };
-            let rotation = { x: 0, y: 0 };
+            let rotation = { x: -10, y: 20 };
             
-            model.addEventListener('mousedown', (e) => {
+            // Установка начального вращения
+            hologram.style.transform = `rotateY(${rotation.y}deg) rotateX(${rotation.x}deg)`;
+            
+            hologram.addEventListener('mousedown', (e) => {
                 isDragging = true;
                 previousMousePosition = { x: e.clientX, y: e.clientY };
+                hologram.style.transition = 'none';
             });
             
             document.addEventListener('mousemove', (e) => {
@@ -1179,22 +1329,57 @@
                 const deltaY = e.clientY - previousMousePosition.y;
                 
                 rotation.y += deltaX * 0.5;
-                rotation.x += deltaY * 0.5;
+                rotation.x -= deltaY * 0.5;
                 
-                model.style.transform = `rotateY(${rotation.y}deg) rotateX(${rotation.x}deg)`;
+                // Ограничение вращения по X чтобы не переворачивать модель
+                rotation.x = Math.max(-60, Math.min(60, rotation.x));
+                
+                hologram.style.transform = `rotateY(${rotation.y}deg) rotateX(${rotation.x}deg)`;
                 
                 previousMousePosition = { x: e.clientX, y: e.clientY };
             });
             
             document.addEventListener('mouseup', () => {
                 isDragging = false;
+                hologram.style.transition = 'transform 0.8s cubic-bezier(0.23, 1, 0.320, 1)';
             });
             
             // Сброс вращения при двойном клике
-            model.addEventListener('dblclick', () => {
-                rotation = { x: 0, y: 0 };
-                model.style.transform = 'rotateY(0deg) rotateX(0deg)';
+            hologram.addEventListener('dblclick', () => {
+                rotation = { x: -10, y: 20 };
+                hologram.style.transform = `rotateY(${rotation.y}deg) rotateX(${rotation.x}deg)`;
             });
+            
+            // Автоматическое вращение когда модель не используется
+            let autoRotateInterval;
+            
+            function startAutoRotation() {
+                autoRotateInterval = setInterval(() => {
+                    if (!isDragging) {
+                        rotation.y += 0.3;
+                        hologram.style.transform = `rotateY(${rotation.y}deg) rotateX(${rotation.x}deg)`;
+                    }
+                }, 50);
+            }
+            
+            function stopAutoRotation() {
+                clearInterval(autoRotateInterval);
+            }
+            
+            // Запуск автоматического вращения когда слайд с моделью активен
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                        if (slides[7].classList.contains('active')) {
+                            startAutoRotation();
+                        } else {
+                            stopAutoRotation();
+                        }
+                    }
+                });
+            });
+            
+            observer.observe(slides[7], { attributes: true });
             
             // Инициализация
             goToSlide(0);
